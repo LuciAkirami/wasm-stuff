@@ -6,6 +6,36 @@ const calcWasm = fs.readFileSync("./calculator.wasm");
 const cal = await WebAssembly.instantiate(new Uint8Array(calcWasm)).then(
   (res) => res.instance.exports
 );
+/*
+=> WebAssembly.instantiate returns a Promise that resolves to a ResultObject containing 2 
+fields:
+
+->module: A WebAssembly.Module object representing the compiled WebAssembly module.
+This Module can be instantiated again, shared via postMessage(), or cached.
+
+->instance: A WebAssembly.Instance object that contains all the Exported WebAssembly 
+functions.
+
+So the above can also be written as
+const cal = await WebAssembly.instantiate(new Uint8Array(calcWasm)).then(
+  ({module,instance}) => instance.exports
+);
+
+we can use this "module" to create a new webassembly instance like
+var cal = await WebAssembly.instantiate(new Uint8Array(calcWasm)).then(
+  (obj) // ResultObject
+);
+
+we are then retreiving the module from the ResultObject
+var mod = obj.module
+
+const another_cal = await WebAssembly.instantiate(mod).then(
+  (instance) => instance.exports
+);
+
+this time the instantiate() only returns the "instance" but not "module"
+*/
+
 console.log(cal.mul(5, 5));
 console.log(cal.add(5, 5));
 console.log(cal.sub(5, 10));
