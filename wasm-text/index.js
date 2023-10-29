@@ -22,6 +22,8 @@ const cal = await WebAssembly.instantiate(new Uint8Array(calcWasm)).then(
 );
 
 we can use this "module" to create a new webassembly instance like
+// the first .instantiate() is called "primary overload", where ResultObject contains both
+// "module" and "instance"
 var cal = await WebAssembly.instantiate(new Uint8Array(calcWasm)).then(
   (obj) // ResultObject
 );
@@ -29,6 +31,8 @@ var cal = await WebAssembly.instantiate(new Uint8Array(calcWasm)).then(
 we are then retreiving the module from the ResultObject
 var mod = obj.module
 
+// the second .instantiate() is called "secondary overload" and the Promise here only
+// resolves to "instance"
 const another_cal = await WebAssembly.instantiate(mod).then(
   (instance) => instance.exports
 );
