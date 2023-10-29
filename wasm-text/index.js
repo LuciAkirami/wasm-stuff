@@ -115,7 +115,24 @@ var importObject = {
     memory: new WebAssembly.Memory({ initial: 1 }),
   },
 };
+// memory example
+/*
+-> the below implies that memory is defined with an initial size of 10(1*64KB = 640KB) and a max size of 100*64KB=6.4MB
+const memory = new WebAssembly.Memory({ initial: 10, maximum: 100 });
 
+-> to assign a value to the memory at an offset
+new Uint32Array(memory.buffer)[0] = 42;
+-> the above assignes a valye of 42 at an offset of 0 in the memory
+
+-> to access the memory at an offset
+new Uint8Array(memory.buffer)[0];
+42
+
+-> to grow a memory by 1 page / 64KB
+memory.grow(1)
+
+-> if the memory size is 6.4MB and now if you try grow(1), it gives out Range error as the mem is at its max
+*/
 // load the two shared wasm files
 const load_shared0 = fs.readFileSync("./shared0.wasm");
 const load_shared1 = fs.readFileSync("./shared1.wasm");
