@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        const importObject = {
+          console: {
+            log(arg) {
+              console.log(arg);
+            }
+          }
+        };
+  
+        WebAssembly.instantiateStreaming(fetch("logger.wasm"), importObject)
+        .then(obj => {
+          obj.instance.exports.logIt(45);
+        });
+      </script>
+    <p>Henloooooo</p>
+</body>
+</html>
